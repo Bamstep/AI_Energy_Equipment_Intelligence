@@ -23,16 +23,24 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom Styling
+# Custom Styling for Clean Industrial Dashboard
 st.markdown("""
 <style>
-    .metric-card {
-        background-color: #0E1117;
-        border: 1px solid #262730;
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 10px;
+    /* Add top/bottom padding to prevent header clipping */
+    .block-container {
+        padding-top: 3rem !important;
+        padding-bottom: 2rem !important;
     }
+    
+    /* Ensure KPI values stay on one line cleanly */
+    [data-testid="stMetricValue"] {
+        font-size: 1.55rem !important;
+        white-space: nowrap !important;
+    }
+    [data-testid="stMetricLabel"] {
+        font-size: 0.90rem !important;
+    }
+    
     .status-normal { color: #00CC96; font-weight: bold; }
     .status-warning { color: #FFA15A; font-weight: bold; }
     .status-critical { color: #EF553B; font-weight: bold; }
@@ -61,7 +69,6 @@ if selected_asset == "Global Fleet Health Matrix":
     st.title("🏭 Plant Fleet Health & Energy Leakage Matrix")
     st.caption("Central Supervisory Overview: Real-time degradation across all connected plant systems")
 
-    # Aggregate Mock Fleet State
     fleet_summary = [
         {"Asset": "Centrifugal Pump P-101A", "Type": "Rotating Hydraulic", "Health Index": 88.5, "Alarm State": "NORMAL", "Energy Penalty (kW)": 2.1, "Loss ($/yr)": 2116.80},
         {"Asset": "Gas Compressor K-201", "Type": "Centrifugal Gas", "Health Index": 72.0, "Alarm State": "WARNING", "Energy Penalty (kW)": 14.8, "Loss ($/yr)": 14918.40},
@@ -80,7 +87,6 @@ if selected_asset == "Global Fleet Health Matrix":
 
     st.markdown("---")
 
-    # Asset Table
     st.subheader("Asset Status Summary")
     st.dataframe(
         df_fleet.style.format({
@@ -88,10 +94,9 @@ if selected_asset == "Global Fleet Health Matrix":
             "Energy Penalty (kW)": "{:.2f} kW",
             "Loss ($/yr)": "${:,.2f}"
         }),
-        use_container_width=True
+        width="stretch"
     )
 
-    # Health Index Bar Chart
     fig_matrix = go.Figure()
     colors = ["#00CC96" if s == "NORMAL" else ("#FFA15A" if s == "WARNING" else "#EF553B") for s in df_fleet["Alarm State"]]
     fig_matrix.add_trace(go.Bar(
@@ -102,7 +107,7 @@ if selected_asset == "Global Fleet Health Matrix":
         textposition="outside"
     ))
     fig_matrix.update_layout(yaxis_range=[0, 115], yaxis_title="Health Index (%)", height=320, margin=dict(l=20, r=20, t=30, b=20))
-    st.plotly_chart(fig_matrix, use_container_width=True)
+    st.plotly_chart(fig_matrix, width="stretch")
 
 # =========================================================
 # ASSET 1: CENTRIFUGAL PUMP SYSTEM
@@ -164,7 +169,6 @@ elif selected_asset == "Centrifugal Pump System":
 
     st.markdown("---")
 
-    # PDF Download Button
     kpis_pump = {
         "Flow Rate": f"{flow_m3h:.1f} m3/h",
         "Developed Head": f"{head_actual:.1f} m",
@@ -199,7 +203,7 @@ elif selected_asset == "Centrifugal Pump System":
         fig_pump.add_trace(go.Scatter(x=q_curve, y=h_clean, mode="lines", name="Design Curve", line=dict(color="#00CC96", dash="dash")))
         fig_pump.add_trace(go.Scatter(x=[flow_m3h], y=[head_actual], mode="markers", marker=dict(color="#EF553B", size=14), name="Operating Point"))
         fig_pump.update_layout(xaxis_title="Flow Q (m³/h)", yaxis_title="Head H (m)", height=320, margin=dict(l=20, r=20, t=30, b=20))
-        st.plotly_chart(fig_pump, use_container_width=True)
+        st.plotly_chart(fig_pump, width="stretch")
 
     with vcol2:
         st.subheader("ISO 10816-3 Vibration Severity")
@@ -219,7 +223,7 @@ elif selected_asset == "Centrifugal Pump System":
             }
         ))
         fig_vib.update_layout(height=320, margin=dict(l=20, r=20, t=30, b=20))
-        st.plotly_chart(fig_vib, use_container_width=True)
+        st.plotly_chart(fig_vib, width="stretch")
 
 # =========================================================
 # ASSET 2: CENTRIFUGAL GAS COMPRESSOR SYSTEM
@@ -259,7 +263,6 @@ elif selected_asset == "Centrifugal Gas Compressor System":
 
     st.markdown("---")
 
-    # PDF Download Button
     kpis_comp = {
         "Suction Pressure P1": f"{p1_bar:.2f} bar",
         "Discharge Pressure P2": f"{p2_bar:.2f} bar",
@@ -295,7 +298,7 @@ elif selected_asset == "Centrifugal Gas Compressor System":
         fig_comp.add_trace(go.Scatter(x=m_range, y=head_curve, mode="lines", name="Speed Line", line=dict(color="#636EFA", width=2.5)))
         fig_comp.add_trace(go.Scatter(x=[mass_flow], y=[head_poly], mode="markers", marker=dict(color=surge_color, size=14), name="Operating Point"))
         fig_comp.update_layout(xaxis_title="Mass Flow ṁ (kg/s)", yaxis_title="Polytropic Head (kJ/kg)", height=320, margin=dict(l=20, r=20, t=30, b=20))
-        st.plotly_chart(fig_comp, use_container_width=True)
+        st.plotly_chart(fig_comp, width="stretch")
 
     with ccol2:
         st.subheader("Surge Stability Margin")
@@ -314,7 +317,7 @@ elif selected_asset == "Centrifugal Gas Compressor System":
             }
         ))
         fig_sm.update_layout(height=320, margin=dict(l=20, r=20, t=30, b=20))
-        st.plotly_chart(fig_sm, use_container_width=True)
+        st.plotly_chart(fig_sm, width="stretch")
 
 # =========================================================
 # ASSET 3: SHELL & TUBE HEAT EXCHANGER SYSTEM
@@ -398,7 +401,6 @@ elif selected_asset == "Shell & Tube Heat Exchanger":
 
     st.markdown("---")
 
-    # PDF Download Button
     kpis_hx = {
         "Heat Duty (Q)": f"{q_kw:.1f} kW",
         "LMTD": f"{lmtd:.1f} °C",
@@ -434,7 +436,7 @@ elif selected_asset == "Shell & Tube Heat Exchanger":
         fig_temp.add_trace(go.Scatter(x=pos, y=th_p, mode="lines", name="Hot Stream (Tube)", line=dict(color="#EF553B", width=3.5)))
         fig_temp.add_trace(go.Scatter(x=pos, y=tc_p, mode="lines", name="Cold Stream (Shell)", line=dict(color="#00CC96", width=3.5)))
         fig_temp.update_layout(xaxis_title="Normalized Tube Length (%)", yaxis_title="Temperature (°C)", height=320, margin=dict(l=20, r=20, t=30, b=20))
-        st.plotly_chart(fig_temp, use_container_width=True)
+        st.plotly_chart(fig_temp, width="stretch")
 
     with vis_col2:
         st.subheader("TEMA Fouling Resistance Margin")
@@ -453,7 +455,7 @@ elif selected_asset == "Shell & Tube Heat Exchanger":
             }
         ))
         fig_gauge.update_layout(height=320, margin=dict(l=20, r=20, t=30, b=20))
-        st.plotly_chart(fig_gauge, use_container_width=True)
+        st.plotly_chart(fig_gauge, width="stretch")
 
     rcol1, rcol2 = st.columns(2)
     with rcol1:
