@@ -1,11 +1,4 @@
-Here is a production-grade, executive-ready `README.md` tailored specifically to showcase the full depth of your industrial intelligence suite.
-
----
-
-Run this PowerShell command in your project root to overwrite and update `README.md`:
-
-```powershell
-Set-Content -Path README.md -Value @'
+```markdown
 # AI Energy & Equipment Intelligence Suite
 ### Autonomous Industrial SCADA, Digital Twin Analytics & Closed-Loop Chaos Incident Dispatch
 
@@ -83,16 +76,16 @@ flowchart TD
 
 * **Centrifugal Pump**: Flow vs. Head affinity calculations, motor hydraulic efficiency curves, RMS vibration monitoring, and bearing temperature thermal expansion.
 * **Gas Compressor**: Polytropic compression exponent estimation, discharge temperature differentials, pressure ratios, and aerodynamic stall detection.
-* **Shell & Tube Heat Exchanger**: Logarithmic Mean Temperature Difference (LMTD), overall heat transfer coefficient ($U$-value), and fouling thermal resistance tracking.
+* **Shell & Tube Heat Exchanger**: Logarithmic Mean Temperature Difference (LMTD), overall heat transfer coefficient (U-value), and fouling thermal resistance tracking.
 * **Chiller & Induced-Draft Cooling Tower**: kW/ton specific energy consumption, approach temperature, and condenser water circulation loop analytics.
 
 ### 2. Chaos Engineering & Fault Simulation Framework
 
 Built-in RESTful injection vectors allow operators to challenge the plant's interlocks:
 
-* `BEARING_SEIZURE`: Forces mechanical friction excursion ($48.6\text{ mm/s}$ vibration, $142.0^\circ\text{C}$ bearing temperature).
-* `COMPRESSOR_SURGE`: Simulates severe discharge pressure spikes ($9.8\text{ bar}$) with catastrophic CFM drop.
-* `TUBE_RUPTURE`: Induces thermal bypass excursion and rapid delta-$T$ collapse.
+* `BEARING_SEIZURE`: Forces mechanical friction excursion (48.6 mm/s vibration, 142.0 C bearing temperature).
+* `COMPRESSOR_SURGE`: Simulates severe discharge pressure spikes (9.8 bar) with catastrophic CFM drop.
+* `TUBE_RUPTURE`: Induces thermal bypass excursion and rapid delta-T collapse.
 
 ### 3. Automated Closed-Loop ESD & Incident Briefing
 
@@ -102,8 +95,8 @@ Built-in RESTful injection vectors allow operators to challenge the plant's inte
 
 ### 4. Protocol Support & SCADA Visualization
 
-* **Native Industrial TCP Bridge**: Exposes telemetry state on port `5020` mimicking PLC holding registers.
-* **WebSocket Streaming UI**: High-refresh browser console (`http://127.0.0.1:8000`) built with responsive Tailwind CSS.
+* **Native Industrial TCP Bridge**: Exposes telemetry state on port 5020 mimicking PLC holding registers.
+* **WebSocket Streaming UI**: High-refresh browser console (http://127.0.0.1:8000) built with responsive Tailwind CSS.
 * **Streamlit Analytics Hub**: Historical telemetry time-series exploration and RUL forecasting.
 
 ---
@@ -135,23 +128,13 @@ python --version
 ### 2. Clone and Install Dependencies
 
 ```powershell
-git clone [https://github.com/yourusername/AI_Energy_Equipment_Intelligence.git](https://github.com/yourusername/AI_Energy_Equipment_Intelligence.git)
+git clone [https://github.com/Bamstep/AI_Energy_Equipment_Intelligence.git](https://github.com/Bamstep/AI_Energy_Equipment_Intelligence.git)
 cd AI_Energy_Equipment_Intelligence
 pip install -r requirements.txt
 
 ```
 
-### 3. Environment Configuration (Optional)
-
-Set your custom Telegram Bot tokens (fallbacks are pre-wired):
-
-```powershell
-$env:TELEGRAM_BOT_TOKEN="your_bot_token"
-$env:TELEGRAM_CHAT_ID="your_chat_id"
-
-```
-
-### 4. Launch the Central SCADA Platform
+### 3. Launch the Central SCADA Platform
 
 ```powershell
 python ai_equipment_suite.py
@@ -161,7 +144,7 @@ python ai_equipment_suite.py
 * **Web SCADA Dashboard**: Open `http://127.0.0.1:8000` in your browser.
 * **Industrial TCP Bridge**: Active on `127.0.0.1:5020`.
 
-### 5. Launch the Streamlit Analytics Interface (Optional Terminal)
+### 4. Launch the Streamlit Analytics Interface (Optional)
 
 ```powershell
 streamlit run app/streamlit_app.py
@@ -172,7 +155,7 @@ streamlit run app/streamlit_app.py
 
 ## 🧪 Testing Chaos Scenarios
 
-You can trigger catastrophic faults either directly from the buttons on the Web Dashboard (`http://127.0.0.1:8000`) or programmatically via PowerShell:
+You can trigger catastrophic faults either directly from the Web Dashboard (http://127.0.0.1:8000) or programmatically via PowerShell:
 
 ```powershell
 # 1. Inject Bearing Seizure
@@ -206,26 +189,8 @@ AI_Energy_Equipment_Intelligence/
 
 ## 📜 License
 
-Distributed under the MIT License. See `LICENSE` for more information.
-'@
+Distributed under the MIT License.
 
 ```
 
----
-
-### Step 2: Verify the File Was Created Cleanly
-
-Run this in PowerShell:
-
-```powershell
-Get-Item README.md | Select-Object Name, Length, LastWriteTime
-
 ```
-
----
-
-### Step 3: Commit and Push to GitHub
-
-Once verified, commit the complete project and push your work to your remote repository:
-
-
