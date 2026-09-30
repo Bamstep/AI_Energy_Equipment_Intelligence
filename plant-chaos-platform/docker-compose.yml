@@ -1,0 +1,73 @@
+version: '3.8'
+
+networks:
+  plant-network:
+    driver: bridge
+
+volumes:
+  redis_data:
+  timescale_data:
+
+services:
+  gateway:
+    image: nginx:alpine
+    container_name: plant_gateway
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - plant-network
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: plant_frontend
+    networks:
+      - plant-network
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: plant_backend
+    env_file:
+      - .env
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+      - DATABASE_URL=postgresql://telemetry_user:${DB_PASSWORD}@timescaledb:5432/telemetry_db
+    depends_on:
+      - redis
+      - timescaledb
+    networks:
+      - plant-network
+    restart: always
+
+  redis:
+    image: redis:7-alpine
+    container_name: plant_redis
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - plant-network
+    restart: always
+
+  timescaledb:
+    image: timescale/timescaledb:latest-pg15
+    container_name: plant_timescaledb
+    environment:
+      - POSTGRES_USER=telemetry_user
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=telemetry_db
+    volumes:
+      - timescale_data:/var/lib/postgresql/data
+    networks:
+      - plant-network
+    restart: always
